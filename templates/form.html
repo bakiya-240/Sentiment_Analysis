@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sentiment Analysis</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        body {
+            background-color: #f8f9fa;
+        }
+        h1, h2, h3 {
+            color: #343a40;
+        }
+        .btn-primary {
+            width: 100%;
+        }
+    </style>
+</head>
+<body>
+    <div class="container mt-5">
+        <div class="text-center">
+            <h1 class="my-4">Sentiment Analysis with File Upload</h1>
+            <form method="POST" enctype="multipart/form-data">
+                <div class="mb-3">
+                    <input type="file" name="file" class="form-control" accept=".csv" aria-label="Upload a CSV file">
+                </div>
+                <button type="submit" class="btn btn-primary">Upload and Analyze</button>
+            </form>
+        </div>
+
+        {% if data %}
+            <div class="mt-5">
+                <h2 class="text-center">Sentiment Analysis Results</h2>
+                <div class="d-flex justify-content-center mt-3">
+                    <span class="badge bg-success mx-2">Positive: {{ positive_pct * 100 | round(2) }}%</span>
+                    <span class="badge bg-secondary mx-2">Neutral: {{ neutral_pct * 100 | round(2) }}%</span>
+                    <span class="badge bg-danger mx-2">Negative: {{ negative_pct * 100 | round(2) }}%</span>
+                </div>
+
+                <h3 class="text-center mt-4">Sentiment Distribution</h3>
+                <img src="data:image/png;base64,{{ img_base64 }}" alt="Sentiment Distribution Chart" class="mx-auto d-block">
+
+                <h3 class="text-center mt-5">Detailed Sentiment Results</h3>
+                <div class="table-responsive">
+                    {{ data | safe }}
+                </div>
+            </div>
+        {% else %}
+            <div class="mt-5 text-center">
+                <div class="alert alert-warning" role="alert">
+                    No data available. Please upload a file to analyze.
+                </div>
+            </div>
+        {% endif %}
+    </div>
+</body>
+</html>
